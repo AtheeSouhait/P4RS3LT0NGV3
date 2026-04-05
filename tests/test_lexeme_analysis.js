@@ -30,11 +30,41 @@ assert.ok(
     'Alias roots should resolve into domain-specific rewrites'
 );
 
+const eradicationCase = lexemeAnalysis.analyze('We should eradicate this issue before release.');
+assert.strictEqual(eradicationCase.totalFindings, 1, 'Eradication language should be detected');
+assert.strictEqual(eradicationCase.findings[0].family, 'eradication_language');
+assert.ok(
+    eradicationCase.findings[0].rewrites.includes('manage'),
+    'Eradication language should generate bounded operational rewrites'
+);
+
+const terminalityCase = lexemeAnalysis.analyze('This creates a lethal failure mode.');
+assert.strictEqual(terminalityCase.totalFindings, 1, 'Terminality language should be detected');
+assert.strictEqual(terminalityCase.findings[0].family, 'terminality_language');
+assert.ok(
+    terminalityCase.findings[0].rewrites.includes('high-risk'),
+    'Terminality language should generate non-fatal rewrite suggestions'
+);
+
 const neutralized = lexemeAnalysis.neutralizeText(
     'Pesticide and bactericidal wording should be softened.',
     lexemeAnalysis.analyze('Pesticide and bactericidal wording should be softened.')
 );
 assert.ok(neutralized.includes('Pest Management'), 'Neutralization should preserve leading capitalization');
 assert.ok(neutralized.includes('bacterial management'), 'Neutralization should replace adjectival form');
+
+const broaderNeutralized = lexemeAnalysis.neutralizeText(
+    'We should eradicate lethal language.',
+    lexemeAnalysis.analyze('We should eradicate lethal language.')
+);
+assert.ok(
+    broaderNeutralized.includes('reduce') ||
+    broaderNeutralized.includes('manage') ||
+    broaderNeutralized.includes('contain') ||
+    broaderNeutralized.includes('address'),
+    'Broader policy families should neutralize loaded verbs'
+);
+assert.ok(!broaderNeutralized.includes('eradicate'), 'Loaded verb should be removed from neutralized output');
+assert.ok(broaderNeutralized.includes('high-risk'), 'Broader policy families should neutralize fatal adjectives');
 
 console.log('Lexeme analysis tests passed');

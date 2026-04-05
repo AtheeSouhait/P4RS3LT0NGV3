@@ -70,6 +70,71 @@
                 'framed around management',
                 'operationally neutral'
             ]
+        },
+        {
+            id: 'latin-eradication-verbs',
+            family: 'eradication_language',
+            kind: 'surface_pattern',
+            partOfSpeech: 'verb',
+            affixes: ['eradicate', 'exterminate', 'annihilate', 'obliterate'],
+            patterns: [
+                /\b(?:eradicate|eradicates|eradicated|eradicating|eradication)\b/gi,
+                /\b(?:exterminate|exterminates|exterminated|exterminating|extermination)\b/gi,
+                /\b(?:annihilate|annihilates|annihilated|annihilating|annihilation)\b/gi,
+                /\b(?:obliterate|obliterates|obliterated|obliterating|obliteration)\b/gi
+            ],
+            severity: 'high',
+            confidence: 0.88,
+            semanticShift: 'total_removal',
+            explanation: 'Eradication language implies total destruction rather than bounded handling.',
+            fallbackTemplates: [
+                'reduce',
+                'manage',
+                'contain',
+                'address'
+            ]
+        },
+        {
+            id: 'latin-suppression-language',
+            family: 'suppression_language',
+            kind: 'surface_pattern',
+            partOfSpeech: 'verb',
+            affixes: ['neutralize', 'incapacitate', 'suppress'],
+            patterns: [
+                /\b(?:neutralize|neutralizes|neutralized|neutralizing|neutralization)\b/gi,
+                /\b(?:incapacitate|incapacitates|incapacitated|incapacitating|incapacitation)\b/gi,
+                /\b(?:suppress|suppresses|suppressed|suppressing|suppression)\b/gi
+            ],
+            severity: 'medium',
+            confidence: 0.82,
+            semanticShift: 'forceful_control',
+            explanation: 'Suppression language can read as coercive or force-centric rather than operationally neutral.',
+            fallbackTemplates: [
+                'limit',
+                'reduce',
+                'constrain',
+                'manage'
+            ]
+        },
+        {
+            id: 'latin-terminality-language',
+            family: 'terminality_language',
+            kind: 'surface_pattern',
+            partOfSpeech: 'adjective',
+            affixes: ['lethal', 'fatal', 'terminal', 'mortal'],
+            patterns: [
+                /\b(?:lethal|fatal|terminal|mortal)\b/gi
+            ],
+            severity: 'medium',
+            confidence: 0.8,
+            semanticShift: 'fatal_outcome_framing',
+            explanation: 'Terminality language frames outcomes as fatal or irreversible even when a softer operational phrasing would do.',
+            fallbackTemplates: [
+                'high-risk',
+                'severe',
+                'critical',
+                'unsafe'
+            ]
         }
     ];
 
